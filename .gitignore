@@ -1,0 +1,9 @@
+library/incoming/
+library/ready/
+library/problem/
+*.mp3
+*.m4a
+*.mp4
+*.flac
+*.wav
+*.ogg
