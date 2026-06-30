@@ -5,17 +5,15 @@ Use this guide whenever André uploads/sends a screenshot showing a newly downlo
 The goal is to guide André through a clean, repeatable pipeline:
 
 ```text
-Downloaded file on desktop
+YouTube / legal source URL
         ↓
-incoming/
+yt-dlp download to incoming/
         ↓
 identify format
         ↓
-extract/convert audio if needed
-        ↓
-write metadata
-        ↓
 validate metadata
+        ↓
+fix metadata if needed
         ↓
 ready/Artist/Album/
         ↓
@@ -98,6 +96,31 @@ Navidrome scan/debug
 ---
 
 # Standard workflow after a file is downloaded
+
+## Step 0 — download audio with yt-dlp
+
+Run on **Desktop**.
+
+Use this for a single YouTube/video URL that André is allowed to store locally.
+
+```bash
+yt-dlp -x --audio-format m4a --embed-metadata --embed-thumbnail -o "$HOME/Music/PrivateSpotify/library/incoming/%(artist,uploader)s - %(title)s.%(ext)s" "URL_DO_YOUTUBE"
+```
+
+Expected result:
+
+```text
+A new .m4a file appears in:
+~/Music/PrivateSpotify/library/incoming/
+```
+
+Important:
+
+* Replace `URL_DO_YOUTUBE` with a real URL.
+* Do not use playlist URLs until the single-song workflow works.
+* Do not use online SS converters.
+* Prefer `.m4a` over forcing MP3.
+* After download, continue with metadata validation before copying to Raspberry Pi.
 
 ## Step 1 — move raw downloaded file to incoming
 
@@ -439,6 +462,22 @@ Expected:
 ---
 
 # Troubleshooting
+
+## Problem: yt-dlp says “is not a valid URL”
+
+Cause: André copied the placeholder text instead of a real URL.
+
+Wrong:
+
+```bash
+"URL_DO_YOUTUBE"
+```
+
+Correct:
+
+```bash
+"https://www.youtube.com/watch?v=REAL_ID"
+```
 
 ## Problem: command says “is a directory”
 
